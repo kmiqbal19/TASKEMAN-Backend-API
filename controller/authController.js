@@ -82,8 +82,11 @@ exports.logIn = asyncHandler(async (req, res, next) => {
 
 exports.changePassword = asyncHandler(async (req, res) => {
   // Check if the user's current password is correct
-  const user = await User.findById(req.body.id).select("+password");
-
+  const user = await User.findById(req.user.id).select("+password");
+  if (!user) {
+    res.status(401);
+    throw new Error("You are not authorized to perform this action!");
+  }
   const check = await user.checkPassword(
     req.body.currentPassword,
     user.password
