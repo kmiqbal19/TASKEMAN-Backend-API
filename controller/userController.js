@@ -56,3 +56,17 @@ exports.updateUserData = asyncHandler(async (req, res) => {
     },
   });
 });
+// @desc Deactivate User
+// @route /api/v1/users/deactivateAccount
+// @access private
+exports.deactivateAccount = asyncHandler(async (req, res) => {
+  const deactivatedUser = await User.findByIdAndUpdate(req.user.id, {
+    active: false,
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: null,
+    message: "Your account has been deactivated",
+  });
+});

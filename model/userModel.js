@@ -38,6 +38,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       dafault: "default.jpg",
     },
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
+    },
   },
   {
     timestamps: true,
@@ -54,6 +59,10 @@ userSchema.pre("save", async function(next) {
   } catch (err) {
     next(err);
   }
+  next();
+});
+userSchema.pre(/^find/, function(next) {
+  this.find({ active: { $ne: false } });
   next();
 });
 // SCHEMA METHODS

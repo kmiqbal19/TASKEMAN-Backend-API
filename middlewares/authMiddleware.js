@@ -21,7 +21,7 @@ const protect = asyncHandler(async (req, res, next) => {
     token,
     process.env.JWT_SECRET_KEY
   );
-
+  console.log(decoded);
   // Check if the user still exists
   const currentUser = await User.findById(decoded.id).select("-password");
 

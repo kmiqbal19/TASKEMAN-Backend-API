@@ -23,3 +23,5 @@ router.get("/:id", userController.getCurrentUser);
 
 // UPDATE CURRENT USER DATA
 router.route("/updateUserData").put(protect, userController.updateUserData);
+// DEACTIVATE ACCOUNT
+router.patch("/deactivateAccount", protect, userController.deactivateAccount);
