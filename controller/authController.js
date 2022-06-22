@@ -79,3 +79,24 @@ exports.logIn = asyncHandler(async (req, res, next) => {
 // @desc  Change User Password
 // @route /api/v1/users/changePassword
 // @access private
+
+exports.changePassword = asyncHandler(async (req, res) => {
+  // Check if the user's current password is correct
+  const user = await User.findById(req.body.id).select("+password");
+
+  const check = await user.checkPassword(
+    req.body.currentPassword,
+    user.password
+  );
+  if (check === false) {
+    res.status(401);
+    throw new Error("You are not authorized to do this action!");
+  }
+  // If password matches then update the password
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordChangedAt = Date.now();
+  await user.save();
+  // Send token and new user data
+  sendCookieWithToken(res, user);
+});
