@@ -7,5 +7,8 @@ const router = express.Router();
 
 router.route("/signup").post(authController.signUp);
 // LOGIN
-router.post("/login", authController.login);
+router.post("/login", authController.logIn);
 module.exports = router;
+
+// CHANGE PASSWORD
+router.route("/changePassword").patch(authController.changePassword);
