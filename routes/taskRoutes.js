@@ -7,5 +7,8 @@ const router = express.Router();
 router.route("/").get(protect, taskController.getTasks);
 // CREATE TASKS
 router.route("/").post(protect, taskController.createTask);
-
+// UPDATE TASK
+router.patch("/:id", protect, taskController.updateTask);
+// DELETE TASK
+router.delete("/:id", protect, taskController.deleteTask);
 module.exports = router;
