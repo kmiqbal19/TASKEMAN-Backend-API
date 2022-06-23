@@ -6,9 +6,22 @@ const router = express.Router();
 // GET TASKS
 router.route("/").get(protect, taskController.getTasks);
 // CREATE TASKS
-router.route("/").post(protect, taskController.createTask);
+router
+  .route("/")
+  .post(
+    protect,
+    taskController.uploadTaskImage,
+    taskController.resizeUploadedTaskImage,
+    taskController.createTask
+  );
 // UPDATE TASK
-router.patch("/:id", protect, taskController.updateTask);
+router.patch(
+  "/:id",
+  protect,
+  taskController.uploadTaskImage,
+  taskController.resizeUploadedTaskImage,
+  taskController.updateTask
+);
 // DELETE TASK
 router.delete("/:id", protect, taskController.deleteTask);
 module.exports = router;

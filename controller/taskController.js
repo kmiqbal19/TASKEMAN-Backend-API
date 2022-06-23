@@ -1,3 +1,5 @@
+const multer = require("multer");
+const sharp = require("sharp");
 const asyncHandler = require("express-async-handler");
 const Task = require("../model/taskModel");
 // @desc Get Tasks
@@ -12,6 +14,33 @@ exports.getTasks = asyncHandler(async (req, res) => {
     },
   });
 });
+
+// Create multer for adding image to tasks
+const multerStorage = multer.memoryStorage();
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Please upload only images!"), false);
+  }
+};
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+exports.uploadTaskImage = upload.single("photo");
+exports.resizeUploadedTaskImage = (req, res, next) => {
+  if (!req.file) {
+    return next();
+  }
+  req.file.filename = `task-${req.user.id}-${Date.now()}.jpeg`;
+  sharp(req.file.buffer)
+    .resize(700, 500)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/tasks/${req.file.filename}`);
+  next();
+};
 // @desc Create Task
 // @routes /api/v1/tasks
 // @access private
@@ -21,6 +50,9 @@ exports.createTask = asyncHandler(async (req, res) => {
     taskTitle: req.body.title,
     taskDescription: req.body.description,
   };
+  if (req.file) {
+    taskBody.photo = req.file.filename;
+  }
   const task = await Task.create(taskBody);
   res.status(200).json({
     status: "success",
@@ -46,6 +78,9 @@ exports.updateTask = asyncHandler(async (req, res) => {
     throw new Error("User is not authorized!");
   }
   // Update Task
+  if (req.file) {
+    req.body.photo = req.file.filename;
+  }
   const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, {
     runValidators: true,
     new: true,
