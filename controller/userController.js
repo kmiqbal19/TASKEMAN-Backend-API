@@ -30,21 +30,13 @@ exports.getCurrentUser = asyncHandler(async (req, res) => {
     },
   });
 });
+
 // @desc Update User
 // @route /api/v1/users/updateMe
 // @access private
 
 // Create multer for user image upload
 
-// const multerStorage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "public/img/users");
-//   },
-//   filename: (req, file, cb) => {
-//     const ext = file.mimetype.split("/")[1];
-//     cb(null, `user-${req.user.id}-${Date.now()}.${ext}`);
-//   },
-// });
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
@@ -69,7 +61,7 @@ exports.resizeUploadedUserImage = (req, res, next) => {
 };
 exports.updateUserData = asyncHandler(async (req, res) => {
   // Create an error if there is password
-  console.log(req.file);
+
   if (req.body.password || req.body.passwordCofirm) {
     res.status(400);
     throw new Error(
