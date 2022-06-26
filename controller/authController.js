@@ -25,8 +25,8 @@ const sendCookieWithToken = (res, user) => {
   user.password = undefined;
   res.status(200).json({
     status: "success",
-    token,
     data: {
+      token,
       user,
     },
   });

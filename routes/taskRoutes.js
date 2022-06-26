@@ -5,6 +5,8 @@ const protect = require("../middlewares/authMiddleware");
 const router = express.Router();
 // GET TASKS
 router.route("/").get(protect, taskController.getTasks);
+// GET TASK
+router.route("/:id").get(protect, taskController.getTask);
 // CREATE TASKS
 router
   .route("/")

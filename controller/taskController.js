@@ -14,6 +14,18 @@ exports.getTasks = asyncHandler(async (req, res) => {
     },
   });
 });
+// @desc Get Task
+// @routes /api/v1/task/:id
+// @access private
+exports.getTask = asyncHandler(async (req, res) => {
+  const task = await Task.findById(req.params.id);
+  res.status(200).json({
+    status: "success",
+    data: {
+      task,
+    },
+  });
+});
 
 // Create multer for adding image to tasks
 const multerStorage = multer.memoryStorage();
@@ -88,7 +100,7 @@ exports.updateTask = asyncHandler(async (req, res) => {
   res.status(200).json({
     status: "success",
     data: {
-      updatedTask,
+      task: updatedTask,
     },
   });
 });
@@ -113,6 +125,7 @@ exports.deleteTask = asyncHandler(async (req, res) => {
   await task.remove();
   res.status(200).json({
     status: "success",
+    deletedTaskId: req.params.id,
     message: "This task has been removed",
   });
 });
