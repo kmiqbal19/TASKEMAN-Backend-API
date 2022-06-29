@@ -2,10 +2,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
 dotenv.config();
-const DB_URL = process.env.MONGODB_URL.replace(
-  "<password>",
-  process.env.MONGODB_PASSWORD
-);
+const DB_URL = process.env.MONGODB_LINK;
 
 const connectDB = async () => {
   try {
