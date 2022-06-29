@@ -6,7 +6,7 @@ const Task = require("../model/taskModel");
 // @routes /api/v1/tasks
 // @access private
 exports.getTasks = asyncHandler(async (req, res) => {
-  const tasks = await Task.find({ user: req.user.id });
+  const tasks = await Task.find({ user: req.user.id }).sort("-createdAt");
   res.status(200).json({
     status: "success",
     data: {
