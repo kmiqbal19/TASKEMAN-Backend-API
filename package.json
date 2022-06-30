@@ -4,7 +4,7 @@
   "description": "add task like todo but with backend and authorizations",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js"
   },
   "keywords": [
     "addtask"
