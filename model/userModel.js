@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please confirm the password!"],
       validate: {
-        validator: function(element) {
+        validator: function (element) {
           return element === this.password;
         },
         message: "Passwords are not equal",
@@ -37,6 +37,9 @@ const userSchema = new mongoose.Schema(
     photo: {
       type: String,
       default: "default.jpg",
+    },
+    cloudinary_id: {
+      type: String,
     },
     active: {
       type: Boolean,
@@ -50,7 +53,7 @@ const userSchema = new mongoose.Schema(
 );
 
 // SCHEMA PRE SAVE MIDDLEWARE
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   try {
     // Encrypt the password
@@ -61,15 +64,15 @@ userSchema.pre("save", async function(next) {
   }
   next();
 });
-userSchema.pre(/^find/, function(next) {
+userSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });
   next();
 });
 // SCHEMA METHODS
-userSchema.methods.checkPassword = async function(givenPass, originalPass) {
+userSchema.methods.checkPassword = async function (givenPass, originalPass) {
   return await bcrypt.compare(givenPass, originalPass);
 };
-userSchema.methods.isPasswordChanged = function(JWTTimestamp) {
+userSchema.methods.isPasswordChanged = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,

@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const multer = require("multer");
 const sharp = require("sharp");
 const User = require("../model/userModel");
+const cloudinary = require("../utils/cloudinary.js");
 // Filter unwanted items
 const filterObj = (obj, ...allowedItems) => {
   const newObj = {};
@@ -37,7 +38,8 @@ exports.getCurrentUser = asyncHandler(async (req, res) => {
 
 // Create multer for user image upload
 
-const multerStorage = multer.memoryStorage();
+// const multerStorage = multer.memoryStorage();
+const multerStorage = multer.diskStorage({});
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
@@ -60,6 +62,8 @@ exports.resizeUploadedUserImage = (req, res, next) => {
   next();
 };
 exports.updateUserData = asyncHandler(async (req, res) => {
+  // Get the user
+  const user = req.user;
   // Create an error if there is password
 
   if (req.body.password || req.body.passwordCofirm) {
@@ -73,7 +77,12 @@ exports.updateUserData = asyncHandler(async (req, res) => {
   const filteredData = filterObj(req.body, "email", "name");
 
   if (req.file) {
-    filteredData.photo = req.file.filename;
+    if (user.cloudinary_id) {
+      await cloudinary.uploader.destroy(user.cloudinary_id);
+    }
+    const uploadedImg = await cloudinary.uploader.upload(req.file.path);
+    filteredData.photo = uploadedImg.secure_url;
+    filteredData.cloudinary_id = uploadedImg.public_id;
   }
   // Update user
 

@@ -22,13 +22,11 @@ router.get("/", userController.getUsers);
 router.get("/:id", userController.getCurrentUser);
 
 // UPDATE CURRENT USER DATA
-router
-  .route("/updateUserData")
-  .put(
-    protect,
-    userController.updateUserImage,
-    userController.resizeUploadedUserImage,
-    userController.updateUserData
-  );
+router.route("/updateUserData").put(
+  protect,
+  userController.updateUserImage,
+  // userController.resizeUploadedUserImage,
+  userController.updateUserData
+);
 // DEACTIVATE ACCOUNT
 router.patch("/deactivateAccount", protect, userController.deactivateAccount);
