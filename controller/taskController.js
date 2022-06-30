@@ -2,6 +2,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const asyncHandler = require("express-async-handler");
 const Task = require("../model/taskModel");
+const cloudinary = require("../utils/cloudinary");
 // @desc Get Tasks
 // @routes /api/v1/tasks
 // @access private
@@ -28,7 +29,7 @@ exports.getTask = asyncHandler(async (req, res) => {
 });
 
 // Create multer for adding image to tasks
-const multerStorage = multer.memoryStorage();
+const multerStorage = multer.diskStorage({});
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
@@ -62,12 +63,16 @@ exports.createTask = asyncHandler(async (req, res) => {
     taskTitle: req.body.title,
     taskDescription: req.body.description,
   };
+  let result;
   if (req.file) {
-    taskBody.photo = req.file.filename;
+    result = await cloudinary.uploader.upload(req.file.path);
+    taskBody.photo = result.secure_url;
+    taskBody.cloudinary_id = result.public_id;
   }
   const task = await Task.create(taskBody);
   res.status(200).json({
     status: "success",
+    result,
     data: {
       task,
     },
@@ -77,7 +82,7 @@ exports.createTask = asyncHandler(async (req, res) => {
 // @routes /api/v1/tasks/:id
 // @access private
 
-exports.updateTask = asyncHandler(async (req, res) => {
+exports.updateTask = asyncHandler(async (req, res, next) => {
   // Check if the task is still available
   const task = await Task.findById(req.params.id);
   if (!task) {
@@ -90,8 +95,16 @@ exports.updateTask = asyncHandler(async (req, res) => {
     throw new Error("User is not authorized!");
   }
   // Update Task
+
   if (req.file) {
-    req.body.photo = req.file.filename;
+    try {
+      await cloudinary.uploader.destroy(task.cloudinary_id);
+      const fileCloudinary = await cloudinary.uploader.upload(req.file.path);
+      req.body.photo = fileCloudinary.secure_url;
+      req.body.cloudinary_id = fileCloudinary.public_id;
+    } catch (err) {
+      next(err);
+    }
   }
   const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, {
     runValidators: true,
@@ -122,6 +135,7 @@ exports.deleteTask = asyncHandler(async (req, res) => {
     throw new Error("User is not authorized!");
   }
   // Delete Task
+  await cloudinary.uploader.destroy(task.cloudinary_id);
   await task.remove();
   res.status(200).json({
     status: "success",

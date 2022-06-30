@@ -8,20 +8,18 @@ router.route("/").get(protect, taskController.getTasks);
 // GET TASK
 router.route("/:id").get(protect, taskController.getTask);
 // CREATE TASKS
-router
-  .route("/")
-  .post(
-    protect,
-    taskController.uploadTaskImage,
-    taskController.resizeUploadedTaskImage,
-    taskController.createTask
-  );
+router.route("/").post(
+  protect,
+  taskController.uploadTaskImage,
+  // taskController.resizeUploadedTaskImage,
+  taskController.createTask
+);
 // UPDATE TASK
 router.patch(
   "/:id",
   protect,
   taskController.uploadTaskImage,
-  taskController.resizeUploadedTaskImage,
+  // taskController.resizeUploadedTaskImage,
   taskController.updateTask
 );
 // DELETE TASK
