@@ -14,7 +14,6 @@ const taskSchema = mongoose.Schema(
     taskDescription: String,
     photo: {
       type: String,
-      default: "default.jpg",
     },
     cloudinary_id: {
       type: String,

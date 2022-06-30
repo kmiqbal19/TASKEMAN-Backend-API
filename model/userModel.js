@@ -36,7 +36,6 @@ const userSchema = new mongoose.Schema(
     passwordResetTokenExpires: Date,
     photo: {
       type: String,
-      default: "default.jpg",
     },
     cloudinary_id: {
       type: String,
