@@ -72,7 +72,6 @@ exports.createTask = asyncHandler(async (req, res) => {
   const task = await Task.create(taskBody);
   res.status(200).json({
     status: "success",
-    result,
     data: {
       task,
     },
