@@ -134,7 +134,9 @@ exports.deleteTask = asyncHandler(async (req, res) => {
     throw new Error("User is not authorized!");
   }
   // Delete Task
-  await cloudinary.uploader.destroy(task.cloudinary_id);
+  if (task.cloudinary_id) {
+    await cloudinary.uploader.destroy(task.cloudinary_id);
+  }
   await task.remove();
   res.status(200).json({
     status: "success",
