@@ -80,8 +80,18 @@ exports.updateUserData = asyncHandler(async (req, res) => {
     if (user.cloudinary_id) {
       await cloudinary.uploader.destroy(user.cloudinary_id);
     }
-    const uploadedImg = await cloudinary.uploader.upload(req.file.path);
-    filteredData.photo = uploadedImg.secure_url;
+    const uploadedImg = await cloudinary.uploader.upload(req.file.path, {
+      folder: "taskeman_tasks",
+      eager: [
+        {
+          width: 500,
+          height: 500,
+          gravity: "auto",
+          crop: "fill",
+        },
+      ],
+    });
+    filteredData.photo = uploadedImg.eager[0].secure_url;
     filteredData.cloudinary_id = uploadedImg.public_id;
   }
   // Update user

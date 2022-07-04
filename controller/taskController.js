@@ -65,8 +65,18 @@ exports.createTask = asyncHandler(async (req, res) => {
   };
   let result;
   if (req.file) {
-    result = await cloudinary.uploader.upload(req.file.path);
-    taskBody.photo = result.secure_url;
+    result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "taskeman_tasks",
+      eager: [
+        {
+          width: 1000,
+          height: 900,
+          gravity: "auto",
+          crop: "fill",
+        },
+      ],
+    });
+    taskBody.photo = result.eager[0].secure_url;
     taskBody.cloudinary_id = result.public_id;
   }
   const task = await Task.create(taskBody);
@@ -97,9 +107,21 @@ exports.updateTask = asyncHandler(async (req, res, next) => {
 
   if (req.file) {
     try {
-      await cloudinary.uploader.destroy(task.cloudinary_id);
-      const fileCloudinary = await cloudinary.uploader.upload(req.file.path);
-      req.body.photo = fileCloudinary.secure_url;
+      if (task.cloudinary_id) {
+        await cloudinary.uploader.destroy(task.cloudinary_id);
+      }
+      const fileCloudinary = await cloudinary.uploader.upload(req.file.path, {
+        folder: "taskeman_tasks",
+        eager: [
+          {
+            width: 1000,
+            height: 900,
+            gravity: "auto",
+            crop: "fill",
+          },
+        ],
+      });
+      req.body.photo = fileCloudinary.eager[0].secure_url;
       req.body.cloudinary_id = fileCloudinary.public_id;
     } catch (err) {
       next(err);
