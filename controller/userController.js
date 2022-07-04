@@ -81,7 +81,7 @@ exports.updateUserData = asyncHandler(async (req, res) => {
       await cloudinary.uploader.destroy(user.cloudinary_id);
     }
     const uploadedImg = await cloudinary.uploader.upload(req.file.path, {
-      folder: "taskeman_tasks",
+      folder: "taskeman_users",
       eager: [
         {
           width: 500,
