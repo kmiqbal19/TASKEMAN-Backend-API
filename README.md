@@ -1,13 +1,10 @@
-
 # Project Title
 
-TASKEMAN (Task Management App) API 
-
+TASKEMAN (Task Management App) API
 
 ## Authors
 
 - [@kmiqbal19](https://github.com/kmiqbal19)
-
 
 ## API Reference
 
@@ -17,11 +14,11 @@ TASKEMAN (Task Management App) API
    POST /api/v1/users/signup
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `name` | `string` | **Required**. Your name |
-| `email` | `string` | **Required**. Your email address |
-| `password` | `string` | **Required**. Your given password |
+| Parameter         | Type     | Description                              |
+| :---------------- | :------- | :--------------------------------------- |
+| `name`            | `string` | **Required**. Your name                  |
+| `email`           | `string` | **Required**. Your email address         |
+| `password`        | `string` | **Required**. Your given password        |
 | `passwordConfirm` | `string` | **Required**. Your password confirmation |
 
 #### User login
@@ -30,11 +27,10 @@ TASKEMAN (Task Management App) API
    POST /api/v1/users/login
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `email` | `string` | **Required**. Your email address |
+| Parameter  | Type     | Description                       |
+| :--------- | :------- | :-------------------------------- |
+| `email`    | `string` | **Required**. Your email address  |
 | `password` | `string` | **Required**. Your given password |
-
 
 #### User Update Data
 
@@ -42,15 +38,11 @@ TASKEMAN (Task Management App) API
    PUT /api/v1/users/updateUserData
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `email` | `string` | **Required**. Your email address |
-| `name` | `string` | **Required**. Your name |
-| `photo` | `file` | **Not Required**. Your image |
-
-
-
-
+| Parameter | Type     | Description                      |
+| :-------- | :------- | :------------------------------- |
+| `email`   | `string` | **Required**. Your email address |
+| `name`    | `string` | **Required**. Your name          |
+| `photo`   | `file`   | **Not Required**. Your image     |
 
 #### Change Password
 
@@ -58,10 +50,10 @@ TASKEMAN (Task Management App) API
   PATCH /api/v1/users/changePassword
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `currentPassword` | `string` | **Required** Users current password |
-| `password` | `string` | **Required**. Users password |
+| Parameter         | Type     | Description                               |
+| :---------------- | :------- | :---------------------------------------- |
+| `currentPassword` | `string` | **Required** Users current password       |
+| `password`        | `string` | **Required**. Users password              |
 | `passwordConfirm` | `string` | **Required**. Users password Confirmation |
 
 #### Get all tasks
@@ -70,78 +62,74 @@ TASKEMAN (Task Management App) API
   GET /api/v1/tasks
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `jwt` | `string` | **Required**. Your jwt token |
+| Parameter | Type     | Description                  |
+| :-------- | :------- | :--------------------------- |
+| `jwt`     | `string` | **Required**. Your jwt token |
 
 #### Get task
 
 ```http
-  GET /api/task/${id}
+  GET /api/v1/task/${id}
 ```
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `string` | **Required**. Id of task to fetch |
-| `jwt` | `string` | **Required**. Your jwt token |
+| `jwt`     | `string` | **Required**. Your jwt token      |
 
 #### Update task
+
 ```http
-  PATCH /api/task/${id}
+  PATCH /api/v1/task/${id}
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
+| Parameter | Type     | Description                        |
+| :-------- | :------- | :--------------------------------- |
 | `id`      | `string` | **Required**. Id of task to update |
-| `jwt` | `string` | **Required**. Your jwt token |
+| `jwt`     | `string` | **Required**. Your jwt token       |
 
 #### Create task
+
 ```http
-  POST /api/tasks
+  POST /api/v1/tasks
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `jwt` | `string` | **Required**. Your jwt token |
-| `title` | `string` | **Required**. Your task title |
+| Parameter     | Type     | Description                         |
+| :------------ | :------- | :---------------------------------- |
+| `jwt`         | `string` | **Required**. Your jwt token        |
+| `title`       | `string` | **Required**. Your task title       |
 | `description` | `string` | **Required**. Your task description |
-| `photo` | `file` | **Not Required**. Your task photo |
+| `photo`       | `file`   | **Not Required**. Your task photo   |
 
 #### Delete task
+
 ```http
-  DELETE /api/task/${id}
+  DELETE /api/v1/task/${id}
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
+| Parameter | Type     | Description                        |
+| :-------- | :------- | :--------------------------------- |
 | `id`      | `string` | **Required**. Id of task to delete |
-| `jwt` | `string` | **Required**. Your jwt token |
-
-
-
+| `jwt`     | `string` | **Required**. Your jwt token       |
 
 ## Documentation
 
 [Documentation](https://documenter.getpostman.com/view/20397790/UzR1J2S3)
 
-
 ## Demo
 
 Insert gif or link to demo
-
 
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`DATABASE_URL` 
-`JWT_SECRET_KEY` 
-`JWT_EXPIRES_IN` 
+`DATABASE_URL`
+`JWT_SECRET_KEY`
+`JWT_EXPIRES_IN`
 `JWT_COOKIE_EXPIRES_IN`
 `CLOUDINARY_NAME`
 `CLOUDINARY_API`
 `CLOUDINARY_SECRET`
 
-
 ![Logo](https://i.ibb.co/7jrh2YF/Taskeman.png)
-
