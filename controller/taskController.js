@@ -28,6 +28,21 @@ exports.getTask = asyncHandler(async (req, res) => {
   });
 });
 
+// exports.resizeUploadedTaskImage = (req, res, next) => {
+//   if (!req.file) {
+//     return next();
+//   }
+//   req.file.filename = `task-${req.user.id}-${Date.now()}.jpeg`;
+//   sharp(req.file.buffer)
+//     .resize(700, 500)
+//     .toFormat("jpeg")
+//     .jpeg({ quality: 90 })
+//     .toFile(`public/img/tasks/${req.file.filename}`);
+//   next();
+// };
+// @desc Create Task
+// @routes /api/v1/tasks
+// @access private
 // Create multer for adding image to tasks
 const multerStorage = multer.diskStorage({});
 const multerFilter = (req, file, cb) => {
@@ -42,21 +57,6 @@ const upload = multer({
   fileFilter: multerFilter,
 });
 exports.uploadTaskImage = upload.single("photo");
-exports.resizeUploadedTaskImage = (req, res, next) => {
-  if (!req.file) {
-    return next();
-  }
-  req.file.filename = `task-${req.user.id}-${Date.now()}.jpeg`;
-  sharp(req.file.buffer)
-    .resize(700, 500)
-    .toFormat("jpeg")
-    .jpeg({ quality: 90 })
-    .toFile(`public/img/tasks/${req.file.filename}`);
-  next();
-};
-// @desc Create Task
-// @routes /api/v1/tasks
-// @access private
 exports.createTask = asyncHandler(async (req, res) => {
   const taskBody = {
     user: req.user.id,
